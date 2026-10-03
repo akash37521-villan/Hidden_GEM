@@ -1,0 +1,103 @@
+"""
+Django settings for config project.
+
+GeoDjango-aware settings that connect to PostGIS via environment variables.
+"""
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ─── Security ──────────────────────────────────────────────────────────────────
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-dev-only-fallback")
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+
+# ─── Application Definition ────────────────────────────────────────────────────
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    # --- GeoDjango: MUST come before any app using PointField ----
+    "django.contrib.gis",
+    # --- Third-party ---
+    "rest_framework",
+    "django_filters",
+    # --- Local apps ---
+    "app.users",
+    "app.locations",
+]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+# ─── Database ──────────────────────────────────────────────────────────────────
+# IMPORTANT: Use django.contrib.gis.db.backends.postgis (NOT django.db.backends.postgresql)
+# This backend activates PostGIS extensions and enables PointField / GeometryField.
+DATABASES = {
+    "default": {
+        "ENGINE": os.environ.get("DB_ENGINE", "django.contrib.gis.db.backends.postgis"),
+        "NAME": os.environ.get("DB_NAME", "hidden_gem_db"),
+        "USER": os.environ.get("DB_USER", "hidden_gem_user"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "hidden_gem_password"),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
+    }
+}
+
+# ─── Custom User Model ─────────────────────────────────────────────────────────
+AUTH_USER_MODEL = "users.CustomUser"
+
+# ─── Django REST Framework ─────────────────────────────────────────────────────
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+}
+
+# ─── Internationalisation ──────────────────────────────────────────────────────
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = "/static/"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

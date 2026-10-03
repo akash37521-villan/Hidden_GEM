@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hidden Gem Solan — Uncover Himachal Beyond the Tourist Trail</title>
+  <meta name="description" content="Discover offbeat spots within 100 km of Solan, Himachal Pradesh — from Chail and Dagshai to Kuthar, Dolanji, and Kasauli. Connected with authentic local guides." />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet.js CSS for Interactive Mapping -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════
+       1. NAVBAR
+  ═══════════════════════════════════════════════════ -->
+  <header>
+    <nav class="navbar" aria-label="Main navigation">
+      <div class="container navbar__inner">
+        <a href="/" class="navbar__brand" aria-label="Hidden Gem Solan — Homepage">
+          <span>⛰ Hidden Gem</span>
+          <span class="navbar__brand-badge">Solan Hub</span>
+        </a>
+
+        <div class="navbar__nav">
+          <ul class="navbar__links">
+            <li><a href="#map-section">Regional Map</a></li>
+            <li><a href="#explorer-section">100 km Radius</a></li>
+            <li><a href="#guides-section">Local Guides</a></li>
+          </ul>
+          <a href="#guides-section" class="btn btn-accent">Become a Guide</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════════
+         2. HERO SECTION
+  ═══════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="container">
+        <div class="hero__content">
+          <div class="hero__eyebrow">
+            <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+            Solan, Himachal Pradesh · 100 km Exploratory Circle
+          </div>
+
+          <h1 class="hero__title" id="hero-heading">
+            Uncover Himachal<br />Beyond the <em>Tourist Trail</em>
+          </h1>
+
+          <p class="hero__subtitle">
+            Skip the commercial tourist corridors. Connect with residents of Solan, Chail, Dagshai, Kuthar, Dolanji, and Kasauli who share authentic forest paths, historic forts, and secluded mountain viewpoints.
+          </p>
+
+          <!-- Interactive Radius Filter Control -->
+          <div class="hero__controls">
+            <div class="hero__controls-title">Quick Search &amp; Spatial Filter</div>
+            <div class="hero__search-bar">
+              <input
+                type="search"
+                id="search-input"
+                class="hero__search-input"
+                placeholder="Search 'Dagshai', 'Bon Monastery', 'Dham', or 'Kuthar Fort'…"
+                autocomplete="off"
+              />
+              <button type="button" id="search-submit" class="btn btn-accent">Explore</button>
+            </div>
+
+            <!-- Radius Filter Control (Defaulting up to 100 km) -->
+            <div class="radius-filters" role="group" aria-label="Filter locations by exploratory radius">
+              <span class="radius-label">Radius:</span>
+              <button type="button" class="pill-btn active" data-radius="100">100 km (Full Circle)</button>
+              <button type="button" class="pill-btn" data-radius="50">50 km (Day Trips)</button>
+              <button type="button" class="pill-btn" data-radius="25">25 km (Local Foothills)</button>
+              <button type="button" class="pill-btn" data-radius="15">15 km (Solan Valley)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         3. INTERACTIVE MAP CONTAINER (LEAFLET.JS)
+  ═══════════════════════════════════════════════════ -->
+    <section class="map-section" id="map-section" aria-labelledby="map-title">
+      <div class="container">
+        <div class="map-header">
+          <p class="section-eyebrow">Spatial PostGIS Visualizer</p>
+          <h2 class="section-title" id="map-title">Regional Map View (Solan Hub)</h2>
+          <p class="section-desc">
+            Centered at Solan (30.9045° N, 77.0967° E). The circle illustrates your active search boundary with custom terracotta markers.
+          </p>
+        </div>
+
+        <div class="map-card-wrapper">
+          <div id="map" role="region" aria-label="Interactive map showing hidden gems near Solan"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         4. LOCATIONS GRID (3-COLUMN RESPONSIVE)
+  ═══════════════════════════════════════════════════ -->
+    <section class="explorer-section" id="explorer-section" aria-labelledby="explorer-title">
+      <div class="container">
+        <header class="explorer-toolbar">
+          <div>
+            <p class="section-eyebrow">Verified Offbeat Spots</p>
+            <h2 class="section-title" id="explorer-title">Hidden Gems in 100 km Radius</h2>
+          </div>
+
+          <!-- Category filter pills -->
+          <div class="category-pills" role="group" aria-label="Filter by experience category">
+            <button type="button" class="pill-btn active" data-category="All">All Spots</button>
+            <button type="button" class="pill-btn" data-category="Mountain Trail">Mountain Trail</button>
+            <button type="button" class="pill-btn" data-category="Colonial Heritage">Colonial Heritage</button>
+            <button type="button" class="pill-btn" data-category="Monastery">Monastery</button>
+            <button type="button" class="pill-btn" data-category="Local Eatery">Local Eatery</button>
+            <button type="button" class="pill-btn" data-category="Sanctuary">Sanctuary</button>
+          </div>
+        </header>
+
+        <div class="grid-status" style="margin-bottom: 1rem;">
+          Showing <strong id="results-count">12</strong> authentic destinations within selected boundary
+        </div>
+
+        <!-- 3-Column Responsive Locations Grid -->
+        <div class="locations-grid" id="locations-grid">
+          <!-- Dynamically populated via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         5. GUIDE MATCHMAKING BANNER
+  ═══════════════════════════════════════════════════ -->
+    <section class="matchmaking-section" id="guides-section" aria-labelledby="matchmaking-title">
+      <div class="container">
+        <div class="matchmaking-card">
+          <div>
+            <p class="section-eyebrow">Community First</p>
+            <h2 class="section-title" id="matchmaking-title">
+              Meet the Residents Behind the Recommendations
+            </h2>
+            <p>
+              We pair conscious travelers directly with local residents of Solan, Chail, Dagshai, and Kasauli. No commercial commissions or generic tour operators — just passionate storytellers, orchard farmers, and botanical experts who know every ridge and deodar ravine.
+            </p>
+            <div style="display:flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="mailto:guides@hiddengem.in" class="btn btn-accent">Apply as a Local Guide</a>
+              <a href="#map-section" class="btn btn-outline" style="border-color: #F4F1EA; color: #F4F1EA;">Explore Gems on Map</a>
+            </div>
+          </div>
+
+          <aside class="guides-preview-list" aria-label="Active local guides in Solan region">
+            <div class="guide-item">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="Meena Dogra" class="guide-avatar" />
+              <div>
+                <div class="guide-name">Meena Dogra</div>
+                <div class="guide-specialty">Chail Sanctuary &amp; Botanical Flora Specialist</div>
+              </div>
+            </div>
+
+            <div class="guide-item">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Bhupesh Thakur" class="guide-avatar" />
+              <div>
+                <div class="guide-name">Bhupesh Thakur</div>
+                <div class="guide-specialty">Kuthar Fort &amp; Colonial Rail Heritage Historian</div>
+              </div>
+            </div>
+
+            <div class="guide-item">
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Tenzin Norbu" class="guide-avatar" />
+              <div>
+                <div class="guide-name">Tenzin Norbu</div>
+                <div class="guide-specialty">Dolanji Bon Monastery &amp; Spiritual Culture Guide</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════
+       6. FOOTER
+  ═══════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <strong style="color:#FFF; font-size:1.1rem;">⛰ Hidden Gem Solan</strong>
+          <p style="font-size:0.85rem; margin-top:4px;">Connecting curious travelers with authentic Himachal residents.</p>
+        </div>
+        <div style="font-size:0.85rem;">
+          Exploratory Radius: <strong>100 km from Solan (30.9045° N, 77.0967° E)</strong>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Hidden Gem Solan. Built with Django, PostGIS, Docker, and Leaflet.js.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet.js Interactive Mapping Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+
+</body>
+</html>
