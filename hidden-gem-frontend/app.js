@@ -1,3 +1,7 @@
+const { createClient } = supabase;
+const supabaseUrl = 'https://drygpobnfwgfamfraamc.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxeXdjdnl4bnhqZnZpdHZ1emdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwODc4NjYsImV4cCI6MjEwNjY2Mzg2Nn0.8MMN5cgfobKjIKIwBSwbGCxuBRX61ww9wc9eeCgppmY';
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
 /**
  * Hidden Gem & Regional Explorer — Solan & 100 km Radius
  * Core client application: Handles Leaflet.js map initialization,
@@ -289,7 +293,7 @@ function renderLocationsGrid(locations) {
     return;
   }
 
-    gridEl.innerHTML = locations.map((loc) => `
+  gridEl.innerHTML = locations.map((loc) => `
     <article class="location-card" id="card-${loc.id}">
       <div class="location-card__image-wrap">
         <img 
@@ -321,7 +325,7 @@ function renderLocationsGrid(locations) {
 }
 
 // ── 4. Map & Card Interactive Synchronization ──────────────────────────
-window.focusLocationOnMap = function(id, lat, lng) {
+window.focusLocationOnMap = function (id, lat, lng) {
   if (!appState.map) return;
 
   // Pan smoothly to coordinate
