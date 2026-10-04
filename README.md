@@ -1,33 +1,27 @@
-# Hidden Gem 🏔️
-*Authentic Local Tourism & Spatial Matchmaking in Himachal Pradesh*
+# Hidden_GEM
+Hidden Solan is a full-stack web app connecting travelers with local guides to discover offbeat gems within a 100 km radius of Solan. Built using Python, Django REST Framework, PostgreSQL, and PostGIS for spatial queries, it features interactive Leaflet.js mapping, Docker containerization, and a clean, responsive, framework-free frontend design.
 
-Hidden Gem is a full-stack spatial web application designed to bypass commercial tourist corridors. By utilizing radius-based geospatial matchmaking, the platform connects visitors directly with local residents to uncover authentic, off-the-beaten-path experiences within a 100km radius of Solan.
 
-## ✨ Core Features
-* *Geospatial Querying:* Utilizes PostGIS to instantly calculate and filter destinations and local guides within a strict 100km radius of the user's base.
-* *Interactive Web Mapping:* Integrates Leaflet.js to render responsive, custom map layers pinpointing offbeat locations over default mountain landscapes.
-* *Decoupled Architecture:* A strict separation of concerns utilizing a lightweight vanilla frontend communicating securely via API to a heavy-lifting Python backend.
-* *Secure Data Management:* Implements Supabase for robust user authentication and media storage.
+## Running locally
 
-## 🛠️ Technology Stack
-*Frontend (Client-Side)*
-* HTML5, CSS3, Vanilla JavaScript
-* Leaflet.js (Interactive Mapping)
-* Deployed on Vercel
+```bash
+cd hidden-gem-api
+cp .env.example .env        # then fill in SECRET_KEY and DB_PASSWORD
+docker compose up --build   # API on http://localhost:8000
+python manage.py createsuperuser   # run inside the web container to get an admin
+```
 
-*Backend (Server-Side)*
-* Python & Django REST Framework
-* Docker (Containerization)
-* Deployed on Render Web Services
+Open `hidden-gem-frontend/index.html` (or serve it with `python -m http.server`) and set
+`API_BASE_URL` in `hidden-gem-frontend/config.js` to your API address.
 
-*Database & Cloud Infrastructure*
-* PostgreSQL with PostGIS Extension (Render)
-* Supabase (Authentication & Object Storage)
+## Security
 
-## 🏗️ System Architecture
-The application operates on a modern microservices-inspired architecture. The frontend remains framework-free to prioritize lightning-fast load times and DOM manipulation, securely fetching data from the containerized Django REST API. Complex spatial calculations (distance logic, bounding boxes) are offloaded directly to the PostGIS database layer to minimize backend memory usage and optimize response times.
-
-## 🚀 Deployment Status
-* *Database:* Active (PostgreSQL/PostGIS on Render)
-* *API:* Containerized via Docker 
-* *Frontend:* CDN Integrated & Supabase Initialized
+- **Secrets** live in environment variables only (`.env` is git-ignored; see `.env.example`). The app refuses to start in production without a `SECRET_KEY`.
+- **Authentication:** token login (`/api/auth/login/`) with password validators (min. 10 characters, common/numeric/similarity checks). HTTP Basic auth is disabled.
+- **Authorization:** public sign-up always creates a *tourist*. Only an admin can promote an account to *local guide*, and guides can edit only their own locations.
+- **Rate limiting:** login 10/min, registration 5/hour, anonymous API 120/min (DRF throttling).
+- **Input validation:** coordinates and radius are range- and NaN-checked; image URLs must be http(s).
+- **Transport and headers:** HTTPS redirect, secure cookies, HSTS, `nosniff`, `X-Frame-Options: DENY`, strict CORS allow-list, and a Content-Security-Policy on the frontend.
+- **XSS:** all API data is HTML-escaped before rendering; no inline event handlers.
+- **Logging:** registrations and failed logins are written to a `security` log.
+- **Container:** runs as a non-root user with gunicorn; the database port is bound to localhost in development.
